@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow
+  namespace: application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mlflow
+  template:
+    metadata:
+      labels:
+        app: mlflow
+    spec:
+      containers:
+        - name: mlflow
+          image: burakince/mlflow:3.7.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MLFLOW_BACKEND_STORE_URI
+              value: "postgresql://mlflow:mlflowpass@postgres-postgresql.application.svc.cluster.local:5432/mlflow"
+            - name: MLFLOW_ARTIFACT_ROOT
+              value: "s3://mlflow-artifacts"
+            - name: MLFLOW_S3_ENDPOINT_URL
+              value: "http://minio.application.svc.cluster.local:9000"
+            - name: AWS_DEFAULT_REGION
+              value: "us-east-1"
+          envFrom:
+            - secretRef:
+                name: mlflow-secrets
+          ports:
+            - containerPort: 5000
+          command: ["sh", "-c"]
+          args:
+            - >
+              mlflow server
+              --host 0.0.0.0
+              --port 5000
+              --backend-store-uri "$MLFLOW_BACKEND_STORE_URI"
+              --default-artifact-root "$MLFLOW_ARTIFACT_ROOT"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 300m
+              memory: 512Mi

@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: namespaces
+  namespace: infra-tools
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Nevrik-core/mlops-experiments.git
+    targetRevision: lesson-8-9
+    path: argocd/manifests/namespaces
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: infra-tools
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
