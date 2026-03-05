@@ -17,6 +17,12 @@ spec:
         grafana:
           enabled: true
 
+        kube-state-metrics:
+          enabled: false
+
+        prometheus-node-exporter:
+          enabled: false
+
         prometheus:
           prometheusSpec:
             retention: 2d
