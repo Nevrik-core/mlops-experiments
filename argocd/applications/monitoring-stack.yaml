@@ -28,7 +28,6 @@ spec:
                 cpu: 300m
                 memory: 512Mi
 
-            # важливо: щоб Prometheus підхоплював ServiceMonitor з monitoring ns
             serviceMonitorSelectorNilUsesHelmValues: false
             serviceMonitorNamespaceSelector: {}
   destination:
@@ -38,5 +37,7 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+  syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+    - SkipDryRunOnMissingResource=true
