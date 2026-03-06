@@ -3,15 +3,23 @@ kind: Deployment
 metadata:
   name: mlflow
   namespace: application
+  labels:
+    app: mlflow
+    app.kubernetes.io/instance: mlflow
+    app.kubernetes.io/name: mlflow
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: mlflow
+      app.kubernetes.io/instance: mlflow
+      app.kubernetes.io/name: mlflow
   template:
     metadata:
       labels:
         app: mlflow
+        app.kubernetes.io/instance: mlflow
+        app.kubernetes.io/name: mlflow
     spec:
       containers:
         - name: mlflow
@@ -35,6 +43,7 @@ spec:
                 name: mlflow-secrets
           ports:
             - containerPort: 5000
+              name: mlflow
           command: ["sh", "-c"]
           args:
             - >
