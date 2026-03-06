@@ -45,9 +45,9 @@ spec:
                   name: mlflow-secrets
                   key: AWS_SECRET_ACCESS_KEY
             - name: MLFLOW_SERVER_ALLOWED_HOSTS
-              value: "localhost,127.0.0.1,mlflow,mlflow.application.svc.cluster.local"
+              value: "*"
             - name: MLFLOW_SERVER_CORS_ALLOWED_ORIGINS
-              value: "http://localhost:5000,http://127.0.0.1:5000"
+              value: "*"
           ports:
             - containerPort: 5000
               name: mlflow
