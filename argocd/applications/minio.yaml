@@ -11,6 +11,8 @@ spec:
     targetRevision: "17.0.21"
     helm:
       values: |
+        mode: standalone
+
         auth:
           rootUser: minioadmin
           rootPassword: minioadminpass
@@ -18,21 +20,25 @@ spec:
         defaultBuckets: "mlflow-artifacts"
 
         image:
-          registry: registry-1.docker.io
-          repository: bitnamicharts/minio
-          tag: "17.0.21"
+          registry: docker.io
+          repository: bitnamilegacy/minio
+          tag: "2025.7.23-debian-12-r3"
 
+        clientImage:
+          registry: docker.io
+          repository: bitnamilegacy/minio-client
+          tag: "2025.7.21-debian-12-r2"
 
         console:
+          enabled: false
+
+        persistence:
           enabled: false
 
         service:
           type: ClusterIP
           ports:
             api: 9000
-
-        persistence:
-          enabled: false
 
         resources:
           requests:
